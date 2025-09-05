@@ -38,34 +38,39 @@ class AuthController extends Controller
                 'password.min' => 'Password must be at least 8 characters',
                 'password.confirmed' => 'Password confirmation does not match'
             ]);
-            DB::beginTransaction();
-            try {
-                $user = User::create([
-                    'name' => $validated['name'],
-                    'email' => $validated['email'],
-                    'phone' => $validated['phone'],
-                    'address' => $validated['address'],
-                    'password' => Hash::make($validated['password']),
-                    'role' => 'user'
-                ]);
-                event(new Registered($user));
-                Auth::login($user);
-                DB::commit();
-                return redirect()->route('home')
-                    ->with('success', 'Account created successfully' . $user->name);
-            } catch (QueryException $e) {
-                DB::rollBack();
-                Log::error('Database error', $e->getMessage());
-                return redirect()->back()
-                    ->with('error', 'Registration failed');
-            }
-        } catch (ValidationException $e) {
-            DB::rollBack();
-            return redirect()->back()
-                ->withErrors($e->getMessage())
-                ->withErrors($e->errors());
 
+            DB::beginTransaction();
+
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'address' => $validated['address'],
+                'password' => Hash::make($validated['password']),
+                'role' => 'user'
+            ]);
+
+            event(new Registered($user));
+            Auth::login($user);
+
+            DB::commit();
+
+            return redirect()->route('home')
+                ->with('success', 'Account created successfully ' . $user->name);
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors());
+        } catch (QueryException $e) {
+            if (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
+            Log::error('Database error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Registration failed');
         } catch (Exception $e) {
+            if (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
             Log::error('Error during registration', $e->getMessage());
             return redirect()->back()
                 ->with('error', 'Registration failed')

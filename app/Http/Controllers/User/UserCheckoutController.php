@@ -7,11 +7,11 @@ use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Attribute;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserCheckoutController extends Controller
@@ -49,6 +49,8 @@ class UserCheckoutController extends Controller
                 'shipping_address' => 'required|string|max:255',
                 'notes' => 'nullable|string|max:500',
                 'cart' => 'required|array',
+                'cart.*.id' => 'required|exists:products,id',
+                'cart.*.quantity' => 'required|integer|min:1',
             ]);
 
             if (!auth()->check()) {
@@ -71,6 +73,16 @@ class UserCheckoutController extends Controller
             $items = [];
 
             foreach ($request->cart as $item) {
+                $product = Product::findOrFail($item['id']);
+
+                if (!$product->hasEnoughStock($item['quantity'])) {
+                    DB::rollBack();
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Insufficient stock for product: ' . $product->name,
+                    ], 422);
+                }
+
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item['id'],

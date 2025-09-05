@@ -2,15 +2,32 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Order;
+use Laravel\Sanctum\HasApiTokens;
 
 
+/**
+ * Class User
+ *
+ * Represents a user of the e-commerce platform.
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property string|null $address
+ * @property string|null $phone
+ * @property string $role
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
+ */
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'name',

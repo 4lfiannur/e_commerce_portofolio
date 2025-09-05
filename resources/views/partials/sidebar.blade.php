@@ -28,14 +28,14 @@
                     <p class="px-3 text-uppercase small fw-medium mb-2 text-secondary sidebar-text">Catalog Management
                     </p>
 
-                    <a href=""
-                        class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-2 {{ request()->routeIs('admin.categories.*') ? 'active-nav' : 'text-secondary hover-nav' }}">
+                    <a href="{{ route('admin.categories.index') }}"
+                        class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-2 {{ request()->routeIs('admin.categories.index') ? 'active-nav' : 'text-secondary hover-nav' }}">
                         <i class="bi bi-collection-fill"></i>
                         <span class="sidebar-text">Categories</span>
                     </a>
 
-                    <a href="{{ route('admin.products') }}"
-                        class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-2 {{ request()->routeIs('admin.products') ? 'active-nav' : 'text-secondary hover-nav' }}">
+                    <a href="{{ route('admin.products.index') }}"
+                        class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-2 {{ request()->routeIs('admin.products.index') ? 'active-nav' : 'text-secondary hover-nav' }}">
                         <i class="bi bi-box-seam-fill"></i>
                         <span class="sidebar-text">Products</span>
                     </a>
@@ -43,19 +43,23 @@
 
                 <div class="mt-4">
                     <p class="px-3 text-uppercase small fw-medium mb-2 text-secondary sidebar-text">Sales & Orders</p>
-
-                    <a href=""
-                        class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-2 {{ request()->routeIs('admin.orders.*') ? 'active-nav' : 'text-secondary hover-nav' }}">
+                    <a href="{{route('admin.orders.index')}}"
+                        class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-2 {{ request()->routeIs('admin.orders.index') ? 'active-nav' : 'text-secondary hover-nav' }}">
                         <i class="bi bi-cart-check-fill"></i>
                         <span class="sidebar-text">Orders</span>
+                    </a>
+                    <a href="{{ route('admin.history.index') }}"
+                        class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-2 {{ request()->routeIs('admin.history.index') ? 'active-nav' : 'text-secondary hover-nav' }}">
+                        <i class="bi bi-clock-history"></i>
+                        <span class="sidebar-text">Order History</span>
                     </a>
                 </div>
 
                 <div class="mt-4">
                     <p class="px-3 text-uppercase small fw-medium mb-2 text-secondary sidebar-text">User Management</p>
 
-                    <a href=""
-                        class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-2 {{ request()->routeIs('admin.users.*') ? 'active-nav' : 'text-secondary hover-nav' }}">
+                    <a href="{{ route('admin.users.index') }}"
+                        class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded-2 {{ request()->routeIs('admin.users.index') ? 'active-nav' : 'text-secondary hover-nav' }}">
                         <i class="bi bi-people-fill"></i>
                         <span class="sidebar-text">Users</span>
                     </a>
@@ -66,28 +70,34 @@
         <!-- User Profile -->
         <div class="border-top p-3">
             <div class="d-flex align-items-center gap-3">
+                @php
+                    $initials = collect(explode(' ', Auth::user()->name))
+                        ->map(fn($segment) => substr($segment, 0, 1))
+                        ->join('');
+                    $initials = strtoupper($initials);
+                @endphp
                 <div class="rounded-circle bg-success d-flex align-items-center justify-content-center"
                     style="width: 40px; height: 40px;">
-                    <span class="text-white fw-medium">JD</span>
+                    <span class="text-white fw-medium">{{ $initials }}</span>
                 </div>
                 <div class="flex-grow-1 sidebar-text">
-                    <h6 class="mb-0 text-dark fw-medium">John Doe</h6>
-                    <small class="text-muted">Super Admin</small>
+                    <h6 class="mb-0 text-dark fw-medium">{{ Auth::user()->name }}</h6>
+                    <small class="text-muted">{{ Auth::user()->role }}</small>
                 </div>
                 <div class="dropdown">
                     <button class="btn btn-link text-secondary p-0" type="button" data-bs-toggle="dropdown">
                         <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-person-fill me-2"></i>Profile</a>
-                        </li>
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-gear-fill me-2"></i>Settings</a>
-                        </li>
                         <li>
-                            <hr class="dropdown-divider">
+                            <form action="{{ route('auth.logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-danger">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    <span>Logout</span>
+                                </button>
+                            </form>
                         </li>
-                        <li><a class="dropdown-item text-danger" href="#"><i
-                                    class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
                     </ul>
                 </div>
             </div>

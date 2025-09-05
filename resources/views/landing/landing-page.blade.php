@@ -31,120 +31,122 @@
     </div>
 
     <!-- Products Section -->
-    <div id="featured-products" class="products-section bg-white py-12">
+    <div id="featured-products" class="py-8 sm:py-12 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-bold text-gray-900">Featured Products</h2>
-                <select
-                    class="px-4 py-2 rounded-lg border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200">
-                    <option>All Products</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                    <option>Newest</option>
-                </select>
-            </div>
+            <div class="mb-8">
+                <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Featured Products</h2>
 
-            <!-- Products Grid -->
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <!-- Product Card 1 -->
-                <div
-                    class="product-card bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
-                    <img src="https://via.placeholder.com/300" alt="Product" class="w-full h-72 object-cover">
-                    <div class="p-4">
-                        <h3 class="product-name text-lg font-medium text-gray-900">Modern Laptop</h3>
-                        <p class="product-description mt-1 text-sm text-gray-500">High-performance laptop with the latest
-                            features.</p>
-                        <div class="mt-4 flex items-center justify-between">
-                            <p class="text-lg font-semibold text-emerald-600">Rp 12.999.000</p>
-                            <button
-                                class="add-to-cart px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
-                                Add to Cart
-                            </button>
-                        </div>
+                <!-- Search and Filter -->
+                <form action="{{ route('home') }}" method="GET" class="flex flex-col sm:flex-row gap-4 mb-6">
+                    <!-- Search Input -->
+                    <div class="flex-1 min-w-0">
+                        <input type="text" name="search" value="{{ request('search') }}"
+                            placeholder="Search products..." autocomplete="off"
+                            class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200">
                     </div>
-                </div>
 
-                <!-- Product Card 2 -->
-                <div
-                    class="product-card bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
-                    <img src="https://via.placeholder.com/300" alt="Product" class="w-full h-72 object-cover">
-                    <div class="p-4">
-                        <h3 class="product-name text-lg font-medium text-gray-900">Wireless Earbuds</h3>
-                        <p class="product-description mt-1 text-sm text-gray-500">Premium wireless earbuds with noise
-                            cancellation.</p>
-                        <div class="mt-4 flex items-center justify-between">
-                            <p class="text-lg font-semibold text-emerald-600">Rp 1.899.000</p>
-                            <button
-                                class="add-to-cart px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
-                                Add to Cart
-                            </button>
-                        </div>
+                    <!-- Category Filter -->
+                    <div class="w-full sm:w-auto">
+                        <select name="category"
+                            class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200">
+                            <option value="">All Categories</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ request('category') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                </div>
 
-                <!-- Product Card 3 -->
-                <div
-                    class="product-card bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
-                    <img src="https://via.placeholder.com/300" alt="Product" class="w-full h-72 object-cover">
-                    <div class="p-4">
-                        <h3 class="product-name text-lg font-medium text-gray-900">Smart Watch</h3>
-                        <p class="product-description mt-1 text-sm text-gray-500">Feature-rich smartwatch with health
-                            monitoring.</p>
-                        <div class="mt-4 flex items-center justify-between">
-                            <p class="text-lg font-semibold text-emerald-600">Rp 2.499.000</p>
-                            <button
-                                class="add-to-cart px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
-                                Add to Cart
-                            </button>
-                        </div>
+                    <!-- Sort Filter -->
+                    <div class="w-full sm:w-auto">
+                        <select name="sort"
+                            class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200">
+                            <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
+                            <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>
+                                Price: Low to High</option>
+                            <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>
+                                Price: High to Low</option>
+                        </select>
                     </div>
-                </div>
 
-                <!-- Product Card 4 -->
-                <div
-                    class="product-card bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
-                    <img src="https://via.placeholder.com/300" alt="Product" class="w-full h-72 object-cover">
-                    <div class="p-4">
-                        <h3 class="product-name text-lg font-medium text-gray-900">Digital Camera</h3>
-                        <p class="product-description mt-1 text-sm text-gray-500">Professional digital camera for
-                            photography enthusiasts.</p>
-                        <div class="mt-4 flex items-center justify-between">
-                            <p class="text-lg font-semibold text-emerald-600">Rp 8.999.000</p>
-                            <button
-                                class="add-to-cart px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- No Results Message -->
-            <div id="noResults" class="hidden text-center py-12">
-                <h3 class="text-lg font-medium text-gray-900">No products found</h3>
-                <p class="mt-2 text-gray-500">Try adjusting your search terms</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Newsletter Section -->
-    <div id="newsletter-section" class="bg-emerald-50 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Subscribe to Our Newsletter</h2>
-                <p class="text-gray-600 mb-6">Get the latest updates about our products and offers.</p>
-                <form id="newsletter-form" class="max-w-md mx-auto">
-                    @csrf
-                    <div class="flex gap-4">
-                        <input type="email" name="email" placeholder="Enter your email"
-                            class="flex-1 px-4 py-2 rounded-lg border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200">
+                    <!-- Apply Filter Button -->
+                    <div class="w-full sm:w-auto">
                         <button type="submit"
-                            class="px-6 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
-                            Subscribe
+                            class="w-full px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
+                            Apply Filters
                         </button>
                     </div>
                 </form>
+
+                <!-- Products Grid -->
+                <div class="mt-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        @forelse ($products as $product)
+                            <div class="product-card bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
+                                data-id="{{ $product->id }}" data-name="{{ $product->name }}"
+                                data-price="{{ $product->price }}" data-image="{{ $product->getPrimaryImage() }}"
+                                data-category="{{ $product->category->name }}">
+                                <div class="aspect-w-1 aspect-h-1">
+                                    <img src="{{ $product->getPrimaryImage() }}" alt="{{ $product->name }}"
+                                        class="w-full h-48 sm:h-72 object-cover">
+                                </div>
+                                <div class="p-3 sm:p-4">
+                                    <h3 class="product-name text-base sm:text-lg font-medium text-gray-900">
+                                        {{ $product->name }}</h3>
+                                    <p class="product-description mt-1 text-xs sm:text-sm text-gray-500">
+                                        {{ Str::limit($product->description, 100) }}</p>
+                                    <div class="mt-4 flex items-center justify-between">
+                                        <p class="text-base sm:text-lg font-semibold text-gray-600">
+                                            ${{ $product->formatted_price }}</p>
+                                        <button
+                                            class="add-to-cart px-3 py-1 sm:px-4 sm:py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
+                                            Add to Cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="col-span-full text-center py-8 sm:py-12">
+                                <h3 class="text-lg font-semibold text-gray-900">No products found.</h3>
+                                <p class="mt-2 text-sm text-gray-500">Try adjusting your search or filter to find
+                                    what you're looking for.</p>
+                            </div>
+                        @endforelse
+                    </div>
+
+                    <!-- Pagination -->
+                    @if ($products->hasPages())
+                        <div class="mt-6">
+                            <nav class="flex items-center justify-center flex-wrap gap-2">
+                                {{ $products->links() }}
+                            </nav>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Newsletter Section -->
+            <div id="newsletter-section" class="bg-emerald-50 py-12">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-4">Subscribe to Our Newsletter</h2>
+                        <p class="text-gray-600 mb-6">Get the latest updates about our products and offers.</p>
+                        <form id="newsletter-form" class="max-w-md mx-auto">
+                            @csrf
+                            <div class="flex gap-4">
+                                <input type="email" name="email" placeholder="Enter your email"
+                                    class="flex-1 px-4 py-2 rounded-lg border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200">
+                                <button type="submit"
+                                    class="px-6 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
+                                    Subscribe
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection

@@ -26,6 +26,23 @@
             flex: 1;
             min-width: 0;
             transition: margin-left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1 0 auto;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        footer {
+            flex-shrink: 0;
+
+            margin-top: auto;
+
         }
 
         @media (min-width: 992px) {

@@ -18,13 +18,15 @@
 
             <div
                 class="bg-card p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-sm border border-gray-100">
-                <form class="space-y-6">
+                <form class="space-y-6" action="{{ route('auth.login') }}" method="POST">
+                    @csrf
                     <div class="space-y-2">
-                        <input type="email" placeholder="Enter your email" class="input-field" required>
+                        <input type="email" name="email" placeholder="Enter your email" class="input-field" required>
                     </div>
 
                     <div class="space-y-2">
-                        <input type="password" placeholder="Enter your password" class="input-field" required>
+                        <input type="password" name="password" placeholder="Enter your password" class="input-field"
+                            required>
                     </div>
 
                     <div class="flex items-center">

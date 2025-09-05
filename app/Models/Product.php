@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\HasSlug;
-use App\ProductInventory;
+use App\Traits\HasSlug;
+use App\Traits\ProductInventory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

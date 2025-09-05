@@ -3,7 +3,7 @@
 namespace App\Models;
 
 
-use App\HasSlug;
+use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

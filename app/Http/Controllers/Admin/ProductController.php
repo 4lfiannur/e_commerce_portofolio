@@ -54,13 +54,13 @@ class ProductController extends Controller
                 'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
             ]);
 
-            $image = null;
+            $image = [];
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
                 $content = file_get_contents($file->getRealPath());
                 $extension = $file->getClientOriginalExtension();
                 $base64 = base64_encode($content);
-                $image = "data:image/{$extension};base64,{$base64}";
+                $image[] = "data:image/{$extension};base64,{$base64}";
             }
 
             Product::create([
@@ -113,7 +113,7 @@ class ProductController extends Controller
                 $content = file_get_contents($file->getRealPath());
                 $extension = $file->getClientOriginalExtension();
                 $base64 = base64_encode($content);
-                $data['image'] = "data:image/{$extension};base64,{$base64}";
+                $data['image'] = array_merge($product->image ?? [], ["data:image/{$extension};base64,{$base64}"]);
             }
 
             $product->update($data);

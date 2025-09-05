@@ -25,7 +25,8 @@ class Product extends Model
     protected $casts = [
         'price' => 'decimal:2',
         'is_active' => 'boolean',
-        'stock' => 'integer'
+        'stock' => 'integer',
+        'image' => 'array',
     ];
 
     /**
@@ -51,11 +52,11 @@ class Product extends Model
      */
     public function getPrimaryImage()
     {
-        if (!$this->image) {
+        if (empty($this->image)) {
             return null;
         }
 
-        return is_array($this->image) ? $this->image[0] : $this->image;
+        return $this->image[0];
     }
 
     /**
@@ -65,7 +66,7 @@ class Product extends Model
      */
     public function getAllImages()
     {
-        return is_array($this->image) ? $this->image : [$this->image];
+        return $this->image ?? [];
     }
 
     /**

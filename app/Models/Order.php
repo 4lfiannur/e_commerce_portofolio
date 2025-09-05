@@ -91,7 +91,7 @@ class Order extends Model
     public function hasStock(): bool
     {
         return $this->items->every(function ($item) {
-            return $item->product->hasStock($item->quantity);
+            return $item->product->hasEnoughStock($item->quantity);
         });
     }
 

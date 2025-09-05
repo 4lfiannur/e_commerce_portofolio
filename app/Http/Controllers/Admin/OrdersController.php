@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Exception;
 
 class OrdersController extends Controller
 {
@@ -40,17 +41,17 @@ class OrdersController extends Controller
         try {
             $validated = $request->validate([
                 'status' => 'required|in:paid,processing,shipped,cancelled',
-                'resi' => 'required_if:status,shipped|nullable|string|max:255',
+                'resi_code' => 'required_if:status,shipped|nullable|string|max:255',
             ]);
 
-            if ($request->status === 'shipped') {
-                if (empty($request->resi_code)) {
+            if ($validated['status'] === 'shipped') {
+                if (empty($validated['resi_code'])) {
                     throw new Exception('Resi number is required for shipped status.');
                 }
-                $order->resi_code = $request->resi_code;
+                $order->resi_code = $validated['resi_code'];
                 $order->save();
             }
-            $order->updateStatus($request->status);
+            $order->updateStatus($validated['status']);
             return redirect()->back()->with('success', 'Order status updated');
         } catch (Exception $e) {
             return redirect()->back()->with(['error' => $e->getMessage()]);

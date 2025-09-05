@@ -9,3 +9,27 @@
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
+
+# Skrip Windows tetap CRLF (hapus jika tidak diperlukan)
+*.bat eol=crlf
+*.cmd eol=crlf
+*.ps1 eol=crlf
+
+# Tandai file biner (abaikan EOL & diff)
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary
+*.zip  binary
+*.gz   binary
+*.7z   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.eot   binary
+*.mp4  binary
+*.mov  binary
+*.mp3  binary
+*.wav  binary

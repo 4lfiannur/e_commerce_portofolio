@@ -6,10 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') - {{ config('app.name') }}</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css'])
 </head>
 
 <body class="min-h-screen bg-gray-50">
+    <div id="user-data" hidden
+        data-logged-in="{{ auth()->check() ? 'true' : 'false' }}"
+        @auth
+            data-name="{{ Auth::user()->name }}"
+            data-phone="{{ Auth::user()->phone }}"
+            data-address="{{ Auth::user()->address }}"
+        @endauth
+    ></div>
     <!-- Navigation -->
     <header class="bg-white shadow-sm fixed w-full top-0 z-50">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16">
@@ -192,6 +200,7 @@
             </div>
         </div>
     </footer>
+    @vite(['resources/js/app.js'])
 </body>
 
 </html>

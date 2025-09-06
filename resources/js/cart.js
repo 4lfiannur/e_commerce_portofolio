@@ -352,7 +352,7 @@ class ShoppingCart {
 
     async updateTransactionStatus(orderId, result, status) {
         try {
-            const response = await fetch('/payments/update-status', {
+            const response = await fetch('/payment/update-status', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

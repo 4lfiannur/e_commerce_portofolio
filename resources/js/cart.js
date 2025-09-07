@@ -302,7 +302,7 @@ class ShoppingCart {
             }
 
             const data = await response.json();
-            if (!data.status === 'success' || !data.snap_token) {
+            if (data.status !== 'success' || !data.snap_token) {
                 throw new Error(data.message || 'Failed to process payment');
             }
 

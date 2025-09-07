@@ -200,6 +200,8 @@
             </div>
         </div>
     </footer>
+    <script src="{{ config('midtrans.payment_url') }}"
+        data-client-key="{{ config('midtrans.merchant_key') }}"></script>
     @vite(['resources/js/app.js'])
 </body>
 

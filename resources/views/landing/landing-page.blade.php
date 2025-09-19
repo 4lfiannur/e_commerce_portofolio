@@ -87,9 +87,19 @@
                                 data-id="{{ $product->id }}" data-name="{{ $product->name }}"
                                 data-price="{{ $product->price }}" data-image="{{ $product->getPrimaryImage() }}"
                                 data-category="{{ $product->category->name }}">
+                                @php
+                                    $primaryImage = $product->getPrimaryImage();
+                                @endphp
                                 <div class="aspect-w-1 aspect-h-1">
-                                    <img src="{{ $product->getPrimaryImage() }}" alt="{{ $product->name }}"
-                                        class="w-full h-48 sm:h-72 object-cover">
+                                    @if ($primaryImage)
+                                        <img src="{{ $primaryImage }}" alt="{{ $product->name }}"
+                                            class="w-full h-48 sm:h-72 object-cover"
+                                            onerror="this.style.display='none'; const container = this.parentElement; if (container) { container.classList.add('bg-black','flex','items-center','justify-center'); if (!container.querySelector('span')) { const span = document.createElement('span'); span.className = 'text-white text-center'; const card = this.closest('.product-card'); span.textContent = card ? card.getAttribute('data-name') : ''; container.appendChild(span); } }">
+                                    @else
+                                        <div class="w-full h-48 sm:h-72 bg-black flex items-center justify-center">
+                                            <span class="text-white text-center">{{ $product->name }}</span>
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="p-3 sm:p-4">
                                     <h3 class="product-name text-base sm:text-lg font-medium text-gray-900">

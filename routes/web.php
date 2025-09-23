@@ -67,11 +67,14 @@ Route::middleware(['auth', 'can:admin'])->prefix('admin')->group(function () {
         ->name('admin.history.index');
 
     // Order Routes
-    Route::prefix('orders')->group(function () {
-        Route::get('/', [OrdersController::class, 'index'])
-            ->name('admin.orders.index');
-        Route::patch('/{order}/status', [OrdersController::class, 'updateStatus'])
-            ->name('admin.orders.update-status');
+    Route::get('/orders', [OrdersController::class, 'index'])
+        ->name('admin.orders.index');
+    Route::patch('/orders/{order}/status', [OrdersController::class, 'updateStatus'])
+        ->name('admin.orders.update-status');
+
+    // Legacy support for previous /admin/order URL
+    Route::get('/order', function () {
+        return redirect()->route('admin.orders.index');
     });
 });
 

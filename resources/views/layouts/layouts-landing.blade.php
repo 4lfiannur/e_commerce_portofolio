@@ -102,10 +102,13 @@
                                         Dashboard
                                     </a>
                                 @endif
-                                <a href="/orders"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-emerald-600">
-                                    Orders
-                                </a>
+
+                                @if (Auth::user()->canManageOrders())
+                                    <a href="{{ route('admin.orders.index') }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-emerald-600">
+                                        Orders
+                                    </a>
+                                @endif
 
                                 <div class="border-t border-gray-100 my-1"></div>
 

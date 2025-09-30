@@ -103,6 +103,11 @@
                                     </a>
                                 @endif
 
+                                <a href="{{ route('orders.index') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-emerald-600">
+                                    My Orders
+                                </a>
+
                                 @if (Auth::user()->canManageOrders())
                                     <a href="{{ route('admin.orders.index') }}"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-emerald-600">

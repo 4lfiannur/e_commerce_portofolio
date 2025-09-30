@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\User\UserLandingController;
 use App\Http\Controllers\User\UserCheckoutController;
+use App\Http\Controllers\User\UserOrdersController;
 use App\Http\Controllers\Admin\OrderHistoryController;
 
 //Landing Page Routes
@@ -25,6 +26,7 @@ Route::post('/auth/logout', [AuthController::class, 'logout'])->name('auth.logou
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/checkout/process', [UserCheckoutController::class, 'process'])->name('checkout.process');
+    Route::get('/orders', [UserOrdersController::class, 'index'])->name('orders.index');
 });
 
 Route::middleware(['auth', 'can:admin'])->prefix('admin')->group(function () {

@@ -76,54 +76,68 @@
                         <a href="{{ route('register') }}"
                             class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-2 rounded-xl hover:opacity-90">Register</a>
                     @else
-                        <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open" @click.away="open = false"
-                                class="flex items-center space-x-2 text-gray-600 hover:text-emerald-600 focus:outline-none">
-                                <span>{{ Auth::user()->name }}</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="relative">
+                            <button id="userMenuButton" type="button"
+                                data-dropdown-toggle="userMenu"
+                                data-dropdown-placement="bottom-end"
+                                aria-expanded="false" aria-haspopup="true"
+                                class="flex items-center gap-3 text-gray-600 hover:text-emerald-600 focus:outline-none">
+                                <span class="hidden sm:inline text-sm font-medium">{{ Auth::user()->name }}</span>
+                                <span
+                                    class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500 text-white">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5.121 17.804A4 4 0 019 15h6a4 4 0 013.879 2.804M15 11a3 3 0 10-6 0 3 3 0 006 0z" />
+                                    </svg>
+                                </span>
+                                <svg class="h-4 w-4 text-gray-400 sm:block" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 9l-7 7-7-7" />
                                 </svg>
                             </button>
 
-                            <!-- Dropdown Menu -->
-                            <div x-show="open" x-transition:enter="transition ease-out duration-100"
-                                x-transition:enter-start="transform opacity-0 scale-95"
-                                x-transition:enter-end="transform opacity-100 scale-100"
-                                x-transition:leave="transition ease-in duration-75"
-                                x-transition:leave-start="transform opacity-100 scale-100"
-                                x-transition:leave-end="transform opacity-0 scale-95"
-                                class="absolute right-0 mt-2 w-48 py-2 bg-white rounded-xl shadow-lg border border-gray-100"
-                                style="display: none;">
+                            <div id="userMenu"
+                                class="z-50 hidden w-52 divide-y divide-gray-100 rounded-xl border border-gray-100 bg-white py-2 text-sm shadow-lg">
+                                <div class="px-4 pb-2">
+                                    <p class="text-xs text-gray-400">Signed in as</p>
+                                    <p class="truncate text-sm font-semibold text-gray-900">{{ Auth::user()->name }}</p>
+                                </div>
 
-                                @if (Auth::user()->isAdmin())
-                                    <a href="{{ route('admin.dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-emerald-600">
-                                        Dashboard
+                                <div class="py-2">
+                                    @if (Auth::user()->isAdmin())
+                                        <a href="{{ route('admin.dashboard') }}"
+                                            class="block px-4 py-2 text-gray-600 transition hover:bg-gray-100 hover:text-emerald-600">
+                                            Dashboard
+                                        </a>
+                                    @endif
+
+                                    <a href="{{ route('orders.index') }}"
+                                        class="block px-4 py-2 text-gray-600 transition hover:bg-gray-100 hover:text-emerald-600">
+                                        My Orders
                                     </a>
-                                @endif
 
-                                <a href="{{ route('orders.index') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-emerald-600">
-                                    My Orders
-                                </a>
+                                    @if (Auth::user()->canManageOrders())
+                                        <a href="{{ route('admin.orders.index') }}"
+                                            class="block px-4 py-2 text-gray-600 transition hover:bg-gray-100 hover:text-emerald-600">
+                                            Orders
+                                        </a>
+                                    @endif
+                                </div>
 
-                                @if (Auth::user()->canManageOrders())
-                                    <a href="{{ route('admin.orders.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-emerald-600">
-                                        Orders
-                                    </a>
-                                @endif
-
-                                <div class="border-t border-gray-100 my-1"></div>
-
-                                <form method="POST" action="{{ route('auth.logout') }}" class="block">
-                                    @csrf
-                                    <button type="submit"
-                                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-emerald-600">
-                                        Logout
-                                    </button>
-                                </form>
+                                <div class="py-2">
+                                    <form method="POST" action="{{ route('auth.logout') }}" class="block">
+                                        @csrf
+                                        <button type="submit"
+                                            class="flex w-full items-center gap-2 px-4 py-2 text-left text-red-600 transition hover:bg-red-50">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-9V7m0 0V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2h4a2 2 0 002-2v-2" />
+                                            </svg>
+                                            Logout
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     @endguest
